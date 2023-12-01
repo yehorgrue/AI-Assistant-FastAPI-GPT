@@ -1,0 +1,40 @@
+# https://stackoverflow.com/questions/17234762/how-to-install-and-import-python-modules-at-runtime
+import subprocess
+import sys
+from langchain.agents import AgentType, initialize_agent
+from langchain.chat_models import ChatOpenAI
+
+llm = ChatOpenAI(temperature=0)
+
+tools=[]
+{% for module in modules:%}
+try:
+    spec = importlib.util.spec_from_file_location({{module}}, {{os.getcwd()}})
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+except ImportError:
+    # if error, try installing it via pip and reload the site
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "{{module}}"])
+    import site
+    from importlib import reload
+    reload(site)
+    spec = importlib.util.spec_from_file_location({{module}}, {{os.getcwd()}})
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+{% endfor %}
+
+{{code}}
+
+tools.append(tool)
+
+agent = initialize_agent(
+    tools,
+    ChatOpenAI(temperature=0),
+    agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    verbose=True,
+)
+
+agent.run(
+    "Who is Leo DiCaprio's girlfriend? What is her current age raised to the 0.43 power?"
+)

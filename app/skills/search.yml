@@ -1,0 +1,27 @@
+name: Search
+description: "useful for when you need to answer questions about current events."
+args_schema: SearchInput
+env_vars:
+  - SERP_API_KEY
+modules:
+  - from langchain import SerpAPIWrapper
+  - from langchain.tools import BaseTool, StructuredTool, Tool, tool
+  - from pydantic imprt BaseModel, Field
+code: |+
+  {% if env_vars: for var in env_vars: %}
+  {%     {{var}} = os.getenv('{{var}}') %}
+
+  def _handle_error(error: ToolException) -> str:
+      return (
+          "The following errors occurred during tool execution:"
+          + error.args[0]
+          + "Please try another tool."
+      )
+
+  class SearchInput(BaseModel):
+    query: str = Field(description="should be a search query")
+
+  @tool("{{name}}", return_direct=True, args_schema={{args_schema}})'
+  search = SerpAPIWrapper(query: str) -> str:
+    """{{description}}"""
+    return "Results"

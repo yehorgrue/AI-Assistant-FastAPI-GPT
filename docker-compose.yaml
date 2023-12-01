@@ -1,0 +1,31 @@
+# prod environment
+version: "3"
+
+services:
+  azara-api:
+    build: .
+    container_name: "azara-api.${AZARA_ENV}.${AZARA_API_VERSION:-latest}"
+    ports:
+      - '9000:9000'
+    volumes:
+      - .:/code
+    restart: always
+#    depends_on:
+#      - redis
+    environment:
+      - AZARA_ENV=${AZARA_ENV}
+      - AZARA_API_VERSION=${AZARA_API_VERSION:-latest}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_ORG_ID=${OPENAI_ORG_ID}
+      - SERPAPI_API_KEY=${SERPAPI_API_KEY}
+#      - REDIS_OM_URL=redis://${REDIS_USER}:${REDIS_PASSWORD}@redis:6379
+      - REDIS_OM_URL=${REDIS_OM_URL}
+
+#  redis: 
+#    image: redis/redis-stack-server:latest 
+#    container_name: redis
+#    ports:
+#      - '6379:6379'
+#    restart: always
+#    environment: 
+#      REDIS_ARGS: ${REQUIRE_PASSWORD_ARGS} # --user ${REDIS_USER} on >password ~* allcommands --user default off nopass nocommands"

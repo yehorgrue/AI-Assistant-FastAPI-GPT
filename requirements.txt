@@ -1,0 +1,33 @@
+########## OPENAI
+openai
+langchain
+google-search-results
+huggingface_hub
+########## UTILITY
+pandas
+werkzeug
+pypdf
+jinja2
+typing
+tiktoken
+openpyxl
+pandas
+########## DEV
+python-dotenv
+promptwatch
+########## REDIS
+redis[hiredis]
+redis-om
+########## FASTAPI
+fastapi[all]
+fastapi-cache2[redis]
+gunicorn
+uvicorn
+python-multipart
+########## AUTH
+firebase-admin
+########## TESTING
+pytest
+pytest-dependency
+locust
+faker

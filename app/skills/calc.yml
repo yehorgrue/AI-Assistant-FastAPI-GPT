@@ -1,0 +1,24 @@
+name: Calculator
+description: "useful for when you need to answer questions about math"
+args_schema: CalculatorInput
+image: "http://placekitten.co/200/200"
+modules:
+- import math
+- from langchain import LLMMathChain
+- from langchain.tools import BaseTool, StructuredTool, Tool, tool
+- from pydantic imprt BaseModel, Field
+code: |+
+  def _handle_error(error: ToolException) -> str:
+      return (
+          "The following errors occurred during tool execution:"
+          + error.args[0]
+          + "Please try another tool."
+      )
+
+  class CalculatorInput(BaseModel):
+    question: str = Field()
+
+  @tool("{{name}}", return_direct=True, args_schema={{args_schema}})'
+  llm_math_chain = LLMMathChain(question: str, llm=llm, verbose=True) -> str:
+    """{{description}}"""
+    return "Results"

@@ -1,0 +1,5 @@
+[
+  { "system": "system prompt" },
+  { "assistant": "assistant prompt" },
+  { "user": "user queries" }
+]
